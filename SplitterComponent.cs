@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 namespace LiveSplit.JumpKing {
@@ -22,6 +23,7 @@ namespace LiveSplit.JumpKing {
 		private bool hasLog;
 		private Screen lastScreen;
 		private float lastGameTime;
+		private Thread updateLoop;
 
 		public SplitterComponent(LiveSplitState state) {
 			mem = new SplitterMemory();
@@ -41,9 +43,23 @@ namespace LiveSplit.JumpKing {
 				state.OnSplit += OnSplit;
 				state.OnUndoSplit += OnUndoSplit;
 				state.OnSkipSplit += OnSkipSplit;
+
+				updateLoop = new Thread(UpdateLoop);
+				updateLoop.IsBackground = true;
+				updateLoop.Start();
 			}
 		}
 
+		private void UpdateLoop() {
+			while (updateLoop != null) {
+				try {
+					GetValues();
+				} catch (Exception ex) {
+					WriteLog(ex.ToString());
+				}
+				Thread.Sleep(8);
+			}
+		}
 		public void GetValues() {
 			if (!mem.HookProcess()) { return; }
 
@@ -67,7 +83,7 @@ namespace LiveSplit.JumpKing {
 
 				if (currentSplit < Model.CurrentState.Run.Count && currentSplit < settings.Splits.Count) {
 					SplitName split = settings.Splits[currentSplit];
-					
+
 					switch (split) {
 						case SplitName.RedcrownWoods: shouldSplit = lastScreen != Screen.ColossalDrain1 && screen == Screen.ColossalDrain1; break;
 						case SplitName.ColossalDrain: shouldSplit = lastScreen != Screen.FalseKingsKeep1 && screen == Screen.FalseKingsKeep1; break;
@@ -156,12 +172,10 @@ namespace LiveSplit.JumpKing {
 		}
 
 		public void Update(IInvalidator invalidator, LiveSplitState lvstate, float width, float height, LayoutMode mode) {
-			GetValues();
 		}
 		public void OnReset(object sender, TimerPhase e) {
 			currentSplit = -1;
 			lastPlayerEntity = mem.PlayerEntity();
-			Model.CurrentState.IsGameTimePaused = true;
 			WriteLog("---------Reset----------------------------------");
 		}
 		public void OnResume(object sender, EventArgs e) {
@@ -172,6 +186,7 @@ namespace LiveSplit.JumpKing {
 		}
 		public void OnStart(object sender, EventArgs e) {
 			currentSplit = 0;
+			Model.CurrentState.SetGameTime(TimeSpan.Zero);
 			Model.CurrentState.IsGameTimePaused = true;
 			WriteLog("---------New Game " + Assembly.GetExecutingAssembly().GetName().Version.ToString(3) + "-------------------------");
 		}
@@ -217,6 +232,9 @@ namespace LiveSplit.JumpKing {
 		public float PaddingTop { get { return 0; } }
 		public float VerticalHeight { get { return 0; } }
 		public void Dispose() {
+			if (updateLoop != null) {
+				updateLoop = null;
+			}
 			if (Model != null) {
 				Model.CurrentState.OnReset -= OnReset;
 				Model.CurrentState.OnPause -= OnPause;
