@@ -156,7 +156,7 @@ namespace LiveSplit.JumpKing {
 						case LogObject.PlayerEntity: curr = mem.PlayerEntity().ToString("X"); break;
 						case LogObject.PlayerScreen: curr = mem.PlayerScreen().ToString(); break;
 						case LogObject.TimesWon: curr = mem.TimesWon().ToString(); break;
-						//case LogObject.GameTime: curr = mem.GameTime().ToString("0"); break;
+						case LogObject.GameTime: curr = mem.GameTime().ToString("0"); break;
 						default: curr = string.Empty; break;
 					}
 
@@ -201,10 +201,6 @@ namespace LiveSplit.JumpKing {
 		public void OnSplit(object sender, EventArgs e) {
 			currentSplit++;
 			WriteLog("---------Split-----------------------------------");
-			if (currentSplit == Model.CurrentState.Run.Count) {
-				ISegment segment = Model.CurrentState.Run[currentSplit - 1];
-				segment.SplitTime = new Time(segment.SplitTime.RealTime, TimeSpan.FromSeconds(lastGameTime));
-			}
 		}
 		private void WriteLog(string data) {
 			if (hasLog || !Console.IsOutputRedirected) {
