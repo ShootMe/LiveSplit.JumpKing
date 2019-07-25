@@ -36,15 +36,15 @@ namespace LiveSplit.JumpKing {
 			return SaveManager.Read<float>(Program, 0x0, 0x4, 0x10, 0x30);
 		}
 		public float GameTime() {
-			//AchievementManager.instance.m_all_time_stats.time
-			float allTime = IStatInfo.Read<float>(Program, 0x0, 0x20);
-			//AchievementManager.instance.m_snapshot.time
-			float snapshot = IStatInfo.Read<float>(Program, 0x0, 0x8);
-			return allTime - snapshot;
+			//AchievementManager.instance.m_all_time_stats._ticks
+			int allTime = IStatInfo.Read<int>(Program, 0x0, 0x3c);
+			//AchievementManager.instance.m_snapshot._ticks
+			int snapshot = IStatInfo.Read<int>(Program, 0x0, 0x20);
+			return (allTime - snapshot) * 0.017f;
 		}
 		public int TimesWon() {
 			//AchievementManager.instance.m_all_time_stats.times_won
-			return IStatInfo.Read<int>(Program, 0x0, 0x34);
+			return IStatInfo.Read<int>(Program, 0x0, 0x38);
 		}
 		public bool HookProcess() {
 			IsHooked = Program != null && !Program.HasExited;
