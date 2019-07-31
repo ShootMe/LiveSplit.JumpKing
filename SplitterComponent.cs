@@ -114,7 +114,7 @@ namespace LiveSplit.JumpKing {
 				lastTimesWon = timesWon;
 			}
 
-			if (gameTime > 0 || lastGameTime == gameTime) {
+			if (gameTime > 0) {
 				Model.CurrentState.SetGameTime(TimeSpan.FromSeconds(gameTime));
 			}
 

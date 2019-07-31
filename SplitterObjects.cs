@@ -88,6 +88,7 @@ namespace LiveSplit.JumpKing {
 		LostFrontier4,
 		LostFrontier5,
 		LostFrontier6,
+		LostFrontier7,
 		HiddenKingdom1,
 		HiddenKingdom2,
 		HiddenKingdom3,
