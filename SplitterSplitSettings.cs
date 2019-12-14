@@ -92,10 +92,4 @@ namespace LiveSplit.JumpKing {
 			isDragging = false;
 		}
 	}
-	public class ToolTipAttribute : Attribute {
-		public string ToolTip { get; set; }
-		public ToolTipAttribute(string text) {
-			ToolTip = text;
-		}
-	}
 }

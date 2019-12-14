@@ -146,6 +146,24 @@ namespace LiveSplit.JumpKing {
 
 			LoadSettings();
 		}
+		private void btnGhostBabe_Click(object sender, EventArgs e) {
+			if (Splits.Count > 0 && MessageBox.Show(this, "You already have some splits setup. This will clear anything you have and default in these splits.\r\n\r\nAre you sure you want to continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
+				return;
+			}
+
+			Splits.Clear();
+			Splits.Add(SplitName.RedcrownWoods);
+			Splits.Add(SplitName.PhilosophersForest);
+			Splits.Add(SplitName.Bog);
+			Splits.Add(SplitName.MouldingManor);
+			Splits.Add(SplitName.Bugstalk);
+			Splits.Add(SplitName.HouseOfNineLives);
+			Splits.Add(SplitName.PhantomTower);
+			Splits.Add(SplitName.HaltedRuin);
+			Splits.Add(SplitName.EndGameGhost);
+
+			LoadSettings();
+		}
 		private List<string> GetAvailableDescriptions<T>() where T : struct {
 			List<string> values = new List<string>();
 			foreach (T value in Enum.GetValues(typeof(T))) {

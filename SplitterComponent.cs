@@ -85,7 +85,7 @@ namespace LiveSplit.JumpKing {
 					SplitName split = settings.Splits[currentSplit];
 
 					switch (split) {
-						case SplitName.RedcrownWoods: shouldSplit = lastScreen != Screen.ColossalDrain1 && screen == Screen.ColossalDrain1; break;
+						case SplitName.RedcrownWoods: shouldSplit = (lastScreen != Screen.ColossalDrain1 && screen == Screen.ColossalDrain1) || (lastScreen != Screen.PhilosophersForest1 && screen == Screen.PhilosophersForest1); break;
 						case SplitName.ColossalDrain: shouldSplit = lastScreen != Screen.FalseKingsKeep1 && screen == Screen.FalseKingsKeep1; break;
 						case SplitName.FalseKingsKeep: shouldSplit = lastScreen != Screen.Bargainburg1 && screen == Screen.Bargainburg1; break;
 						case SplitName.Bargainburg: shouldSplit = lastScreen != Screen.GreatFrontier1 && screen == Screen.GreatFrontier1; break;
@@ -103,11 +103,20 @@ namespace LiveSplit.JumpKing {
 						case SplitName.BlackSanctum: shouldSplit = lastScreen != Screen.DeepRuin1 && screen == Screen.DeepRuin1; break;
 						case SplitName.DeepRuin: shouldSplit = lastScreen != Screen.TheDarkTower1 && screen == Screen.TheDarkTower1; break;
 
+						case SplitName.PhilosophersForest: shouldSplit = lastScreen != Screen.Hole2 && screen == Screen.Hole2; break;
+						case SplitName.Bog: shouldSplit = lastScreen != Screen.MouldingManor1 && screen == Screen.MouldingManor1; break;
+						case SplitName.MouldingManor: shouldSplit = lastScreen != Screen.Bugstalk1 && screen == Screen.Bugstalk1; break;
+						case SplitName.Bugstalk: shouldSplit = lastScreen != Screen.HouseOfNineLives1 && screen == Screen.HouseOfNineLives1; break;
+						case SplitName.HouseOfNineLives: shouldSplit = lastScreen != Screen.PhantomTower1 && screen == Screen.PhantomTower1; break;
+						case SplitName.PhantomTower: shouldSplit = lastScreen != Screen.HaltedRuin1 && screen == Screen.HaltedRuin1; break;
+						case SplitName.HaltedRuin: shouldSplit = lastScreen != Screen.TowerOfAntumbra1 && screen == Screen.TowerOfAntumbra1; break;
+
 						case SplitName.EndGameMain: shouldSplit = screen == Screen.MainBabe && lastTimesWon < timesWon; break;
 						case SplitName.EndGameNew: shouldSplit = screen == Screen.NewBabe && lastTimesWon < timesWon; break;
+						case SplitName.EndGameGhost: shouldSplit = screen == Screen.GhostBabe && lastTimesWon < timesWon; break;
 					}
 				} else {
-					shouldSplit = (screen == Screen.MainBabe || screen == Screen.NewBabe) && lastTimesWon < timesWon;
+					shouldSplit = (screen == Screen.MainBabe || screen == Screen.NewBabe || screen == Screen.GhostBabe) && lastTimesWon < timesWon;
 				}
 
 				lastScreen = screen;

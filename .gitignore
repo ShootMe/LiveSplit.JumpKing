@@ -7,3 +7,6 @@
 /bin
 /.vs
 /LiveSplit.JumpKing.csproj.user
+/JumpKingManager/obj
+/JumpKingManager/bin
+/JumpKingManager/JumpKingManager.csproj.user
