@@ -56,6 +56,9 @@
             this.cboSpecificLevel = new System.Windows.Forms.ComboBox();
             this.btnSpecificLevel = new System.Windows.Forms.Button();
             this.lblSpecificLevel = new System.Windows.Forms.Label();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnLoadPosition = new System.Windows.Forms.Button();
+            this.lblSavedPosition = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnRedcrownWoods
@@ -374,11 +377,43 @@
             this.lblSpecificLevel.TabIndex = 29;
             this.lblSpecificLevel.Text = "&Specific Level";
             // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(190, 329);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(82, 23);
+            this.btnSave.TabIndex = 32;
+            this.btnSave.Text = "Save Position";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnLoadPosition
+            // 
+            this.btnLoadPosition.Location = new System.Drawing.Point(278, 329);
+            this.btnLoadPosition.Name = "btnLoadPosition";
+            this.btnLoadPosition.Size = new System.Drawing.Size(86, 23);
+            this.btnLoadPosition.TabIndex = 33;
+            this.btnLoadPosition.Text = "Load Position";
+            this.btnLoadPosition.UseVisualStyleBackColor = true;
+            this.btnLoadPosition.Click += new System.EventHandler(this.btnLoadPosition_Click);
+            // 
+            // lblSavedPosition
+            // 
+            this.lblSavedPosition.Location = new System.Drawing.Point(12, 327);
+            this.lblSavedPosition.Name = "lblSavedPosition";
+            this.lblSavedPosition.Size = new System.Drawing.Size(172, 26);
+            this.lblSavedPosition.TabIndex = 34;
+            this.lblSavedPosition.Text = "No Position";
+            this.lblSavedPosition.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // Manager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(377, 335);
+            this.ClientSize = new System.Drawing.Size(377, 361);
+            this.Controls.Add(this.lblSavedPosition);
+            this.Controls.Add(this.btnLoadPosition);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.lblSpecificLevel);
             this.Controls.Add(this.btnSpecificLevel);
             this.Controls.Add(this.cboSpecificLevel);
@@ -456,6 +491,9 @@
         private System.Windows.Forms.ComboBox cboSpecificLevel;
         private System.Windows.Forms.Button btnSpecificLevel;
         private System.Windows.Forms.Label lblSpecificLevel;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnLoadPosition;
+        private System.Windows.Forms.Label lblSavedPosition;
     }
 }
 

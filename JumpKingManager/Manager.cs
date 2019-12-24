@@ -1,8 +1,18 @@
 ﻿using LiveSplit.JumpKing;
 using System;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Threading;
+
 namespace JumpKingManager {
     public partial class Manager : System.Windows.Forms.Form {
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        private static extern short GetAsyncKeyState(System.Windows.Forms.Keys vkey);
+        private static bool IsKeyDown(System.Windows.Forms.Keys key) {
+            return (GetAsyncKeyState(key) >> 15 & 1) == 1;
+        }
         [STAThread]
         public static void Main() {
             System.Windows.Forms.Application.EnableVisualStyles();
@@ -11,6 +21,10 @@ namespace JumpKingManager {
         }
         private static string TitleBarText = "Jump King Manager v" + Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
         private SplitterMemory Memory = new SplitterMemory();
+        private float Px, Py;
+        private Screen PScreen;
+        private bool stillHolding = false;
+        private Thread keyThread;
         public Manager() {
             InitializeComponent();
             Text = TitleBarText;
@@ -19,8 +33,38 @@ namespace JumpKingManager {
                     cboSpecificLevel.Items.Add(type);
                 }
             }
+            keyThread = new Thread(CheckKeys);
+            keyThread.IsBackground = true;
+            keyThread.Start();
         }
-
+        private void CheckKeys() {
+            while (true) {
+                try {
+                    if (Memory.HookProcess() && Memory.Program.MainWindowHandle == GetForegroundWindow()) {
+                        if (IsKeyDown(System.Windows.Forms.Keys.ControlKey) && IsKeyDown(System.Windows.Forms.Keys.S)) {
+                            if (!stillHolding) {
+                                btnSave_Click(null, null);
+                                stillHolding = true;
+                            }
+                        } else if (IsKeyDown(System.Windows.Forms.Keys.ControlKey) && IsKeyDown(System.Windows.Forms.Keys.G)) {
+                            if (!stillHolding) {
+                                btnLoadPosition_Click(null, null);
+                                stillHolding = true;
+                            }
+                        } else if (IsKeyDown(System.Windows.Forms.Keys.ControlKey) && IsKeyDown(System.Windows.Forms.Keys.X)) {
+                            if (!stillHolding) {
+                                btnSpecificLevel_Click(null, null);
+                                stillHolding = true;
+                            }
+                        } else {
+                            stillHolding = false;
+                        }
+                    }
+                } catch {
+                }
+                Thread.Sleep(16);
+            }
+        }
         private void TeleportToLevel(Screen screen) {
             try {
                 if (!Memory.HookProcess()) {
@@ -274,8 +318,41 @@ namespace JumpKingManager {
             TeleportToLevel(Screen.TowerOfAntumbra1);
         }
         private void btnSpecificLevel_Click(object sender, EventArgs e) {
+            if (this.InvokeRequired) {
+                this.Invoke((EventHandler)btnSpecificLevel_Click);
+                return;
+            }
+
             if (cboSpecificLevel.SelectedItem != null) {
                 TeleportToLevel((Screen)cboSpecificLevel.SelectedItem);
+            }
+        }
+        private void btnSave_Click(object sender, EventArgs e) {
+            try {
+                if (this.InvokeRequired) {
+                    this.Invoke((EventHandler)btnSave_Click);
+                    return;
+                }
+
+                Px = Memory.PlayerX();
+                Py = Memory.PlayerY();
+                PScreen = Memory.PlayerScreen();
+                lblSavedPosition.Text = $"{PScreen.ToString()}\r\n({Px.ToString("0.00")}, {Py.ToString("0.00")})";
+            } catch (Exception ex) {
+                System.Windows.Forms.MessageBox.Show(ex.ToString(), "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+        }
+        private void btnLoadPosition_Click(object sender, EventArgs e) {
+            try {
+                if (this.InvokeRequired) {
+                    this.Invoke((EventHandler)btnLoadPosition_Click);
+                    return;
+                }
+
+                if (Px == 0 && Py == 0) { return; }
+                Memory.TeleportPlayer(PScreen, Px, Py);
+            } catch (Exception ex) {
+                System.Windows.Forms.MessageBox.Show(ex.ToString(), "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             }
         }
     }
