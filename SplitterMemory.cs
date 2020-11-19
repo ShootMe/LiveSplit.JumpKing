@@ -25,8 +25,15 @@ namespace LiveSplit.JumpKing {
             return SaveManager.Read<int>(Program, 0x0, 0x4);
         }
         public void TeleportPlayer(Screen screen, float x, float y) {
-            SaveManager.Write<float>(Program, x, 0x0, 0x4, 0x10, 0x2c);
-            SaveManager.Write<float>(Program, y, 0x0, 0x4, 0x10, 0x30);
+            byte[] data = new byte[16];
+            byte[] temp = BitConverter.GetBytes(x);
+            Array.Copy(temp, 0, data, 0, 4);
+            temp = BitConverter.GetBytes(y);
+            Array.Copy(temp, 0, data, 4, 4);
+            temp = BitConverter.GetBytes(0.26f);
+            Array.Copy(temp, 0, data, 12, 4);
+            //SaveManager.instance.m_player.m_body.position.X/Y & .velocity.X/Y
+            SaveManager.Write(Program, data, 0x0, 0x4, 0x10, 0x2c);
             Camera.Write<int>(Program, (int)screen, 0x0, 0x0);
         }
         public Screen PlayerScreen() {

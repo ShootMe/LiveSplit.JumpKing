@@ -3,7 +3,6 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
-
 namespace JumpKingManager {
     public partial class Manager : System.Windows.Forms.Form {
         [DllImport("user32.dll")]
