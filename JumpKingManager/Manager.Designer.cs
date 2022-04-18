@@ -59,6 +59,10 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.btnLoadPosition = new System.Windows.Forms.Button();
             this.lblSavedPosition = new System.Windows.Forms.Label();
+            this.btnCoordinates = new System.Windows.Forms.Button();
+            this.yAxis = new System.Windows.Forms.TextBox();
+            this.xAxis = new System.Windows.Forms.TextBox();
+            this.lblLevelCoordinates = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnRedcrownWoods
@@ -406,11 +410,49 @@
             this.lblSavedPosition.Text = "No Position";
             this.lblSavedPosition.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // btnCoordinates
+            // 
+            this.btnCoordinates.Location = new System.Drawing.Point(323, 372);
+            this.btnCoordinates.Name = "btnCoordinates";
+            this.btnCoordinates.Size = new System.Drawing.Size(41, 23);
+            this.btnCoordinates.TabIndex = 38;
+            this.btnCoordinates.Text = "Go";
+            this.btnCoordinates.UseVisualStyleBackColor = true;
+            this.btnCoordinates.Click += new System.EventHandler(this.btnCoordinates_Click);
+            // 
+            // yAxis
+            // 
+            this.yAxis.Location = new System.Drawing.Point(217, 374);
+            this.yAxis.Name = "yAxis";
+            this.yAxis.Size = new System.Drawing.Size(100, 20);
+            this.yAxis.TabIndex = 37;
+            // 
+            // xAxis
+            // 
+            this.xAxis.AccessibleName = "";
+            this.xAxis.Location = new System.Drawing.Point(111, 374);
+            this.xAxis.Name = "xAxis";
+            this.xAxis.Size = new System.Drawing.Size(100, 20);
+            this.xAxis.TabIndex = 36;
+            // 
+            // lblLevelCoordinates
+            // 
+            this.lblLevelCoordinates.AutoSize = true;
+            this.lblLevelCoordinates.Location = new System.Drawing.Point(12, 377);
+            this.lblLevelCoordinates.Name = "lblLevelCoordinates";
+            this.lblLevelCoordinates.Size = new System.Drawing.Size(92, 13);
+            this.lblLevelCoordinates.TabIndex = 35;
+            this.lblLevelCoordinates.Text = "Level &Coordinates";
+            // 
             // Manager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(377, 361);
+            this.ClientSize = new System.Drawing.Size(377, 407);
+            this.Controls.Add(this.lblLevelCoordinates);
+            this.Controls.Add(this.xAxis);
+            this.Controls.Add(this.yAxis);
+            this.Controls.Add(this.btnCoordinates);
             this.Controls.Add(this.lblSavedPosition);
             this.Controls.Add(this.btnLoadPosition);
             this.Controls.Add(this.btnSave);
@@ -494,6 +536,10 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnLoadPosition;
         private System.Windows.Forms.Label lblSavedPosition;
+        private System.Windows.Forms.Button btnCoordinates;
+        private System.Windows.Forms.TextBox yAxis;
+        private System.Windows.Forms.TextBox xAxis;
+        private System.Windows.Forms.Label lblLevelCoordinates;
     }
 }
 

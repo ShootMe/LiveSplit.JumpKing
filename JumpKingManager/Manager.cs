@@ -341,6 +341,34 @@ namespace JumpKingManager {
                 System.Windows.Forms.MessageBox.Show(ex.ToString(), "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             }
         }
+
+        private void btnCoordinates_Click(object sender, EventArgs eargs)
+        {
+            try
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke((EventHandler)btnCoordinates_Click);
+                    return;
+                }
+
+                float x = (float)Convert.ToDouble(xAxis.Text);
+                bool xValid = float.TryParse(xAxis.Text.ToString(), out x);
+                float y = (float)Convert.ToDouble(yAxis.Text);
+                bool yValid = float.TryParse(yAxis.Text.ToString(), out y);
+                if (x == 0f && y == 0f) { return; }
+
+                if (xValid && yValid)
+                {
+                    int screen = (int)Math.Ceiling(y / -360);
+                    Memory.TeleportPlayer((Screen)screen, x, y);
+                }
+
+            } catch (Exception ex) {
+                System.Windows.Forms.MessageBox.Show(ex.ToString(), "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+        }
+
         private void btnLoadPosition_Click(object sender, EventArgs e) {
             try {
                 if (this.InvokeRequired) {
