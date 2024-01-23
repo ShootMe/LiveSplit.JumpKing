@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace LiveSplit.JumpKing {
     //.load C:\Windows\Microsoft.NET\Framework\v4.0.30319\SOS.dll
     public partial class SplitterMemory {
-        private static ProgramPointer SaveManager = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.Steam, "558BEC57565383EC24894DD0A1????????38008B7DD083C724", 13));
+        private static ProgramPointer SaveManager = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.Steam, "558BEC57565383EC24894DD0A1????????38008B7DD083C7288B35", 13));
         private static ProgramPointer IStatInfo = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.Steam, "558BEC57568B412C85C0741E83F801752B8B35", 19));
         private static ProgramPointer Camera = new ProgramPointer(AutoDeref.None, new ProgramSignature(PointerVersion.Steam, "558BEC833D????????007D0833D28915????????8B15", 22));
         public Process Program { get; set; }
@@ -32,32 +32,41 @@ namespace LiveSplit.JumpKing {
             Array.Copy(temp, 0, data, 4, 4);
             temp = BitConverter.GetBytes(0.26f);
             Array.Copy(temp, 0, data, 12, 4);
+
             //SaveManager.instance.m_player.m_body.position.X/Y & .velocity.X/Y
-            SaveManager.Write(Program, data, 0x0, 0x4, 0x10, 0x2c);
+            SaveManager.Write(Program, data, 0x0, 0x4, 0xc, 0x3c);
             Camera.Write<int>(Program, (int)screen, 0x0, 0x0);
         }
+
+        // SaveManager.instance.
+        // m_player         004
+        // m_body           00c
+
+        // Position         03c
+        // Velocity         044
+
         public Screen PlayerScreen() {
-            //SaveManager.instance.m_player.m_body.m_last_screen
-            return (Screen)SaveManager.Read<int>(Program, 0x0, 0x4, 0x10, 0x14);
+            // Camera.CurrentScreenIndex1
+            return (Screen)Camera.Read<int>(Program, 0x0, 0x0);
         }
         public float PlayerX() {
             //SaveManager.instance.m_player.m_body.position.X
-            return SaveManager.Read<float>(Program, 0x0, 0x4, 0x10, 0x2c);
+            return SaveManager.Read<float>(Program, 0x0, 0x4, 0xc, 0x3c);
         }
         public float PlayerY() {
             //SaveManager.instance.m_player.m_body.position.Y
-            return SaveManager.Read<float>(Program, 0x0, 0x4, 0x10, 0x30);
+            return SaveManager.Read<float>(Program, 0x0, 0x4, 0xc, 0x40);
         }
         public float GameTime() {
-            //AchievementManager.instance.m_all_time_stats._ticks
-            int allTime = IStatInfo.Read<int>(Program, 0x0, 0x3c);
-            //AchievementManager.instance.m_snapshot._ticks
-            int snapshot = IStatInfo.Read<int>(Program, 0x0, 0x20);
+            //AchievementManager.instance.m_all_time_stats._ticks (60 = 38 + 28)
+            int allTime = IStatInfo.Read<int>(Program, 0x0, 0x60);
+            //AchievementManager.instance.m_snapshot._ticks (30 = 8 + 28)
+            int snapshot = IStatInfo.Read<int>(Program, 0x0, 0x30);
             return (allTime - snapshot) * 0.017f;
         }
         public int TimesWon() {
-            //AchievementManager.instance.m_all_time_stats.times_won
-            return IStatInfo.Read<int>(Program, 0x0, 0x38);
+            //AchievementManager.instance.m_all_time_stats.times_won (5C = 38 + 24)
+            return IStatInfo.Read<int>(Program, 0x0, 0x5C);
         }
         public bool HookProcess() {
             IsHooked = Program != null && !Program.HasExited;
