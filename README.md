@@ -1,6 +1,3 @@
-> **ℹ️ Disclaimer**
-<br>This fork has been archived for inactivity until further request on modification.
-
 # LiveSplit.JumpKing
 Autosplitter for the game Jump King
 
