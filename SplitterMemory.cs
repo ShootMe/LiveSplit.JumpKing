@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace LiveSplit.JumpKing {
     //.load C:\Windows\Microsoft.NET\Framework\v4.0.30319\SOS.dll
     public partial class SplitterMemory {
-        private static ProgramPointer SaveManager = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.Steam, "558BEC57565383EC24894DD0A1????????38008B7DD083C7288B35", 13));
+        private static ProgramPointer SaveManager = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.Steam, "558BEC57565383EC24894DD0A1????????38008B7DD083C72C8B35", 13));
         private static ProgramPointer IStatInfo = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.Steam, "558BEC57568B412C85C0741E83F801752B8B35", 19));
         private static ProgramPointer Camera = new ProgramPointer(AutoDeref.None, new ProgramSignature(PointerVersion.Steam, "558BEC833D????????007D0833D28915????????8B15", 22));
         public Process Program { get; set; }
